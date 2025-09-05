@@ -1,5 +1,8 @@
 # Celo Proxy Manager
 
+## Automated Celo transaction simulator with proxy routing, persona-driven behavior, and logging.
+
+
 A **Node.js + ethers.js** based automation tool for the **Celo blockchain**, designed to handle multi-wallet transactions with proxy routing, randomized behavior, and structured logging.
 This tool is useful for **transaction simulation, network reliability testing, and load balancing across RPC endpoints** while ensuring traffic diversity with proxy rotation.
 
