@@ -1,1 +1,1 @@
-# private key one per line
+# place your private keys here (one per line) - DO NOT COMMIT
