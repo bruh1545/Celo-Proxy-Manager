@@ -79,7 +79,7 @@ function initLogFile() {
 
 // --- Tx Log Buffer ---
 let txBuffer = [];
-const FLUSH_INTERVAL = 60 * 1000; // 1 min
+const FLUSH_INTERVAL = 300 * 1000; // 5 min
 function bufferTxLog(entry) {
   txBuffer.push(entry);
 }
@@ -207,26 +207,39 @@ async function sendTx() {
     }
     console.log(chalk.dim(`Explorer link: https://celoscan.io/tx/${tx.hash}`));
 
+    // === FIX APPLIED HERE ===
+    // Initialize variables outside of the try block to ensure scope
     let status = "pending", gasUsed = "", feeCELO = "", gasPriceGwei = "", txNonce = tx.nonce;
 
-    const receipt = await Promise.race([
-      tx.wait(),
-      new Promise((resolve) => setTimeout(resolve, 10000))
-    ]);
+    try {
+        // Use Promise.race with a timeout that resolves to null
+        const receipt = await Promise.race([
+            tx.wait(),
+            new Promise(resolve => setTimeout(() => resolve(null), 10000)) // returns null on timeout
+        ]);
 
-    if (receipt) {
-      status = "confirmed";
-      gasUsed = receipt.gasUsed.toString();
-      gasPriceGwei = ethers.formatUnits(receipt.gasPrice, "gwei");
-      feeCELO = ethers.formatEther(receipt.gasUsed * receipt.gasPrice);
+        if (receipt) {
+            // Only access receipt properties if it's not null/undefined
+            status = "confirmed";
+            gasUsed = receipt.gasUsed.toString();
+            // Use effectiveGasPrice for Ethers v6 compatibility
+            gasPriceGwei = ethers.formatUnits(receipt.effectiveGasPrice ?? receipt.gasPrice, "gwei");
+            // Use effectiveGasPrice for the fee calculation
+            feeCELO = ethers.formatEther((receipt.effectiveGasPrice ?? receipt.gasPrice) * receipt.gasUsed);
 
-      console.log(chalk.bgGreen.white.bold("🟢 Confirmed!"));
-      console.log(`   Nonce: ${txNonce}`);
-      console.log(chalk.hex("#ADFF2F").bold(`   Gas Used: ${gasUsed}`));
-      console.log(chalk.hex("#FFB6C1").bold(`   Gas Price: ${gasPriceGwei} gwei`));
-      console.log(chalk.hex("#FFD700").bold(`   Fee Paid: ${feeCELO} CELO`));
-    } else {
-      console.log(chalk.bgYellow.white.bold("🟡 No confirmation in 10s, moving on..."));
+            console.log(chalk.bgGreen.white.bold("🟢 Confirmed!"));
+            console.log(`   Nonce: ${txNonce}`);
+            console.log(chalk.hex("#ADFF2F").bold(`   Gas Used: ${gasUsed}`));
+            console.log(chalk.hex("#FFB6C1").bold(`   Gas Price: ${gasPriceGwei} gwei`));
+            console.log(chalk.hex("#FFD700").bold(`   Fee Paid: ${feeCELO} CELO`));
+        } else {
+            console.log(chalk.bgYellow.white.bold("🟡 No confirmation in 10s, moving on..."));
+            // Set status to 'timeout' or similar if needed for logging
+            status = "timeout";
+        }
+    } catch (err) {
+        console.error(chalk.bgRed.white.bold("❌ Error fetching receipt:", err.message));
+        status = "error";
     }
 
     // === Buffer to CSV (daily rotation) ===
