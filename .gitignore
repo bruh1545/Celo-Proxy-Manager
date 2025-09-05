@@ -1,0 +1,9 @@
+node_modules/
+.env
+key.txt
+proxy.txt
+tx_log_*.csv
+personas.json
+dead_proxies.json
+.DS_Store
+npm-debug.log
