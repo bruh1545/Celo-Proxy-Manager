@@ -1,27 +1,27 @@
-# Celo Proxy Farm
+# Celo Proxy Manager
 
-A stealth-optimized farming script for the **Celo blockchain**, using multiple proxies and wallet personas to simulate human-like testnet/mainnet activity.
-Built with **Node.js** and **ethers.js**, it manages randomized wallet behaviors, transaction delays, dynamic logging, and proxy failover for long-term interaction.
+A **Node.js + ethers.js** based automation tool for the **Celo blockchain**, designed to handle multi-wallet transactions with proxy routing, randomized behavior, and structured logging.
+This tool is useful for **transaction simulation, network reliability testing, and load balancing across RPC endpoints** while ensuring traffic diversity with proxy rotation.
 
 ## ✨ Features
 
-* 🔑 **Multi-wallet support**: load private keys from `key.txt`
-* 🌐 **Proxy cycling with dead-proxy cache**: failed proxies are skipped automatically, logged in `dead_proxies.json`
-* 🕵️ **Persona-driven behavior**: each wallet has unique traits (`idleBias`, `pingBias`, min/max transfer ranges)
-* 🔄 **Randomized key reuse**: small chance to reuse last key (human-like activity)
-* ⏳ **Dynamic random delays**: waits 30–150s (+ jitter) between transactions
-* ⛽ **Gas-aware with nonce cap**: skips wallets with nonce ≥ 535, avoids unbalanced accounts
-* 📝 **Daily rotated CSV logs**: transactions are buffered and written to `tx_log_YYYY-MM-DD.csv`
-* 🔁 **Retry on error**: failed transactions are retried once before skipping
-* 📂 **Persistent state**: personas and proxies stored in JSON files
-* 🎛 **Interactive console logs**: color-coded status with CELO explorer links
+* 🔑 **Multi-wallet support** – load private keys from `key.txt`
+* 🌐 **Proxy management with failover** – skips unreachable proxies, tracked in `dead_proxies.json`
+* 🎭 **Wallet personas** – each wallet is assigned usage traits (idle bias, transfer bias, min/max transfer)
+* 🔄 **Randomized activity** – non-repetitive transaction patterns for simulation realism
+* ⏳ **Adaptive delays** – waits 30–150s (+ jitter) between wallet actions
+* ⛽ **Gas-aware logic** – avoids overused accounts (e.g., nonce caps) and unbalanced wallets
+* 📝 **CSV logging** – daily rotated transaction logs for analysis
+* 🔁 **Error handling** – automatic retry once before skipping
+* 📂 **Persistent state** – proxy health and wallet personas saved across runs
+* 🎛 **Interactive console logs** – color-coded status with CELO explorer links
 
 ## 🚀 Installation
 
 ```bash
 # Clone the repo
-git clone https://github.com/CryptoExplor/celo-proxy-farm.git
-cd celo-proxy-farm
+git clone https://github.com/CryptoExplor/celo-proxy-manager.git
+cd celo-proxy-manager
 
 # Install dependencies
 npm install
@@ -30,7 +30,7 @@ npm install
 ## ⚙️ Setup
 
 1. **Environment variables**
-   Copy `.env.example` → `.env` (optional if using default RPCs):
+   Copy `.env.example` → `.env`:
 
    ```bash
    cp .env.example .env
@@ -39,45 +39,45 @@ npm install
    Example `.env`:
 
    ```env
-   BACKEND_API_URL=https://backend.example.com  # optional
+   BACKEND_API_URL=https://backend.example.com   # optional
    RPCS=https://celo.drpc.org,https://forno.celo.org,https://rpc.ankr.com/celo,https://1rpc.io/celo
    PROXY_LIST=proxy.txt
    ```
 
-2. **Wallet private keys** → add to `key.txt` (1 per line):
+2. **Wallet private keys** → add them to `key.txt` (one per line):
 
    ```
    0xabc123...
    0xdef456...
    ```
 
-3. **Proxies** → add to `proxy.txt` (HTTP/SOCKS5, one per line):
+3. **Proxies** → add to `proxy.txt` (HTTP/SOCKS5 supported):
 
    ```
    socks5://127.0.0.1:9050
    http://username:password@proxyserver:8080
    ```
 
-   Dead proxies are tracked in `dead_proxies.json` and skipped automatically.
+   Dead proxies are automatically cached in `dead_proxies.json`.
 
 ## ▶️ Usage
 
-Run the farmer:
+Run the automation tool:
 
 ```bash
 node index.js
 ```
 
-### Behavior
+### How It Works
 
-* Picks random wallet + random proxy each cycle
-* Sometimes reuses last wallet for realism
-* Sometimes idles (no transaction this round)
-* Chooses between:
+* Selects a random wallet + proxy for each cycle
+* Randomized chance to idle (simulates inactivity)
+* Executes one of:
 
-  * **Ping tx**: sends 0 CELO (burns gas)
-  * **Self-send**: sends small randomized CELO amount to itself
-* Logs activity, retries once if failed, then continues
+  * **Ping transaction** – 0 CELO tx to validate network
+  * **Self-transfer** – randomized CELO amount sent to self
+* Logs all activity to console and CSV
+* Retries failed transactions once before moving on
 
 Example console output:
 
@@ -92,37 +92,37 @@ Balance: 1.234 CELO | Nonce: 42
 ✅ Sent tx: 0xabc...
 🟢 Confirmed!
    Gas Used: 21000 | Gas Price: 0.5 gwei | Fee: 0.0000105 CELO
-⏳ Waiting 97s before next tx...
+⏳ Waiting 97s before next action...
 ```
 
 ## 📦 Output Files
 
-* `tx_log_YYYY-MM-DD.csv` → daily rotated transaction logs
-* `dead_proxies.json` → cache of failed proxies
-* `personas.json` → wallet persona traits
+* `tx_log_YYYY-MM-DD.csv` → daily transaction logs
+* `dead_proxies.json` → failed proxy tracker
+* `personas.json` → wallet persona definitions
 * `key.txt` → wallet private keys (**ignored by git**)
 * `proxy.txt` → proxy list (**ignored by git**)
 
-## 📂 File Structure
+## 📂 Project Structure
 
 ```
-├── index.js             # Main farming script
+├── index.js             # Main automation script
 ├── package.json         # Dependencies
 ├── .env.example         # Example env vars
 ├── .gitignore           # Ignores sensitive files
 ├── key.txt              # Private keys (ignored)
 ├── proxy.txt            # Proxies (ignored)
-├── dead_proxies.json    # Dead proxy tracker
-├── personas.json        # Wallet personas
-├── tx_log_YYYY-MM-DD.csv# Daily tx logs
+├── dead_proxies.json    # Failed proxy cache
+├── personas.json        # Wallet persona settings
+├── tx_log_YYYY-MM-DD.csv# Daily logs
 └── README.md            # Documentation
 ```
 
 ## 🔐 Security Notes
 
-* **Never commit** `key.txt`, `.env`, or proxy credentials.
-* Use **burner/test wallets** for farming.
-* Rotate proxies regularly.
+* **Do not commit** `key.txt`, `.env`, or proxy credentials
+* Always use test or dedicated wallets for automation tasks
+* Rotate proxies regularly for reliability
 
 ## 📜 License
 
@@ -130,4 +130,4 @@ MIT License © 2025 CryptoExplor
 
 ---
 
-💡 Tip: Use [PM2](https://pm2.keymetrics.io/) for process management (auto-restart, logs, uptime).
+💡 Tip: For production usage, run with [PM2](https://pm2.keymetrics.io/) for auto-restart and log management.
