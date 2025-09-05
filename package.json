@@ -1,0 +1,20 @@
+{
+"name": "celo-proxy-farm",
+"version": "1.0.0",
+"description": "Persona-driven Celo tx sender with RPC failover and proxy support",
+"main": "index.js",
+"scripts": {
+"start": "node index.js",
+"lint": "echo \"No linter configured\""
+},
+"keywords": ["celo", "ethers", "proxy", "automation"],
+"author": "",
+"license": "MIT",
+"dependencies": {
+"chalk": "^4.1.2",
+"dotenv": "^16.0.0",
+"ethers": "^6.0.0",
+"node-fetch": "^3.0.0",
+"socks-proxy-agent": "^7.0.0"
+}
+}
