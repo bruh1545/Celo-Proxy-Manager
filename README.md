@@ -4,19 +4,19 @@ A stealth-optimized farming script for the **Celo blockchain**, using multiple p
 
 ## Features
 
-* 🔑 Multi-wallet farming with private key loading from `key.txt`
-* 🌐 Proxy support with automatic failover
-* 🕵️ Persona-driven wallet behavior (random idle periods, activity simulation)
-* ⏳ Randomized transaction delays to mimic human activity
-* 🛡️ Gas-aware scheduling
-* 🗂️ Persistent wallet profiles (CSV + JSON tracking)
-* 📜 Logging of all transactions & failures
+* 🔑 **Multi-wallet support**: load private keys from `key.txt`
+* 🌐 **Proxy failover**: automatic dead proxy detection and 6h retry cycle
+* 🕵️ **Persona-driven behavior**: each wallet simulates unique user patterns
+* ⏳ **Random delays**: human-like transaction scheduling
+* ⛽ **Gas-aware**: avoids high-fee transactions
+* 🗂 **Persistent profiles**: wallet history saved in CSV + JSON
+* 📜 **Logging**: transactions, proxy failures, retries, and persona activity
 
 ## Installation
 
 ```bash
-# Clone repo
-git clone https://github.com/yourusername/celo-proxy-farm.git
+# Clone the repo
+git clone https://github.com/CryptoExplor/celo-proxy-farm.git
 cd celo-proxy-farm
 
 # Install dependencies
@@ -25,36 +25,53 @@ npm install
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and configure your settings:
+1. **Configure environment variables**:
+   Copy `.env.example` to `.env` and edit values:
 
    ```bash
    cp .env.example .env
    ```
 
-   Example variables:
+   Example `.env`:
 
    ```env
+   # Backend endpoint (optional)
    BACKEND_API_URL=https://backend.example.com
-   RPCS=https://celo.drpc.org,https://forno.celo.org
-   PROXY_LIST=proxies.txt
+
+   # RPC endpoints (comma-separated)
+   RPCS=https://celo.drpc.org,https://forno.celo.org,https://rpc.ankr.com/celo
+
+   # Proxy list filename
+   PROXY_LIST=proxy.txt
    ```
 
-2. Add private keys (one per line) in `key.txt`.
+2. **Add wallet private keys** in `key.txt` (1 per line):
 
-3. Add your proxy list (HTTP/SOCKS5) in `proxies.txt`.
+   ```
+   0xabc123...
+   0xdef456...
+   ```
+
+3. **Add proxies** in `proxy.txt` (HTTP/SOCKS5, one per line):
+
+   ```
+   socks5://127.0.0.1:9050
+   http://username:password@proxyserver:8080
+   ```
 
 ## Usage
 
-Run the script with:
+Run the script:
 
 ```bash
 node index.js
 ```
 
-### Flags & Options
+### Options
 
-* `--retry` → enable 6h retry cycle for failed proxies
-* `--debug` → verbose logging
+* `--retry` → enable retry cycle for failed proxies every 6 hours
+* `--debug` → verbose logs
+* `--dry-run` → simulate behavior without sending transactions
 
 Example:
 
@@ -62,28 +79,47 @@ Example:
 node index.js --retry --debug
 ```
 
+## Logs & Output
+
+* ✅ Successful transactions → logged in `logs/transactions.csv`
+* ❌ Dead proxies → written to `dead_proxies.json`
+* 🕒 Retry schedule → automatic, every 6h for failed proxies
+
+Example console output:
+
+```
+🌐 Loaded 14 proxies
+🎭 Loaded existing personas
+🔍 Searching for working RPC...
+✅ Wallet 0x123 sent tx hash 0xabc...
+❌ Proxy 192.168.0.2 marked dead (retry in 6h)
+```
+
 ## File Structure
 
 ```
-├── index.js          # Main script
-├── package.json      # Dependencies
+├── index.js          # Main farming script
+├── package.json      # Dependencies & scripts
 ├── .env.example      # Example environment variables
-├── key.txt           # Private keys (ignored in git)
-├── proxies.txt       # Proxy list (ignored in git)
+├── .gitignore        # Ignores sensitive files
+├── key.txt           # Private keys (ignored)
+├── proxy.txt         # Proxy list (ignored)
+├── dead_proxies.json # Dead proxy cache
 ├── SECURITY.md       # Security guidelines
-└── README.md         # Project docs
+└── README.md         # Documentation
 ```
 
 ## Security
 
-* **Never commit** `key.txt`, `.env`, or any sensitive data.
-* Always use separate wallets for farming/testing.
-* Refer to [`SECURITY.md`](SECURITY.md) for guidelines.
+* **Never commit** `key.txt`, `.env`, or proxy credentials.
+* Use burner/test wallets for farming.
+* Rotate proxies regularly to avoid detection.
+* Review [`SECURITY.md`](SECURITY.md) for detailed guidance.
 
 ## License
 
-MIT License © 2025
+MIT License © 2025 CryptoExplor
 
 ---
 
-💡 Tip: Use a scheduler (like cron or pm2) to run this script continuously with auto-restart.
+💡 Tip: Run with [PM2](https://pm2.keymetrics.io/) or `systemd` for continuous farming with auto-restarts.
